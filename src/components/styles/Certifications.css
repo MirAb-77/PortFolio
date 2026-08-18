@@ -1,0 +1,186 @@
+.certifications-section {
+  position: relative;
+  width: 100%;
+  padding: 140px 0 100px;
+  z-index: 20;
+}
+.certifications-container {
+  margin: auto;
+}
+.certifications-heading {
+  max-width: 640px;
+  margin-bottom: 60px;
+}
+.section-eyebrow {
+  display: inline-block;
+  font-family: "Geist", "SFMono-Regular", Menlo, Monaco, "Roboto Mono",
+    monospace;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--accentColor);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.section-title {
+  font-family: "Geist", sans-serif;
+  font-weight: 600;
+  font-size: 36px;
+  letter-spacing: 1px;
+  margin: 0 0 14px;
+  color: #eae5ec;
+  text-transform: uppercase;
+}
+.section-subtitle {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #a9a3ad;
+  font-weight: 300;
+  margin: 0;
+}
+.certifications-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+.cert-item {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+.cert-card {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 18px;
+  padding: 22px;
+  background: linear-gradient(
+    160deg,
+    rgba(194, 164, 255, 0.06),
+    rgba(255, 255, 255, 0.02)
+  );
+  border: 1px solid rgba(194, 164, 255, 0.14);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  overflow: hidden;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.45s ease, box-shadow 0.45s ease;
+}
+.cert-card::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(
+    circle at 30% 20%,
+    rgba(251, 141, 255, 0.18),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+.cert-item:hover .cert-card {
+  transform: translateY(-6px);
+  border-color: rgba(194, 164, 255, 0.4);
+  box-shadow: 0 24px 60px -20px rgba(84, 0, 255, 0.45);
+}
+.cert-item:hover .cert-card::before {
+  opacity: 1;
+}
+.cert-card-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.03);
+  margin-bottom: 20px;
+}
+.cert-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.cert-card-image.is-loaded {
+  opacity: 1;
+}
+.cert-card-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: rgba(194, 164, 255, 0.55);
+  border: 1px dashed rgba(194, 164, 255, 0.25);
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+.cert-card-placeholder-icon {
+  width: 34px;
+  height: 34px;
+}
+.cert-card-placeholder-label {
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #d6c9ff;
+}
+.cert-card-placeholder-sub {
+  font-size: 11px;
+  color: #756c82;
+}
+.cert-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cert-card-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #eae5ec;
+}
+.cert-card-issuer {
+  margin: 0;
+  font-size: 13px;
+  color: #a9a3ad;
+  font-weight: 300;
+}
+.cert-card-platform {
+  color: #756c82;
+}
+.cert-card-link {
+  margin-top: 10px;
+  font-family: "Geist", "SFMono-Regular", Menlo, Monaco, "Roboto Mono",
+    monospace;
+  font-size: 12px;
+  letter-spacing: 0.6px;
+  color: var(--accentColor);
+}
+@media only screen and (min-width: 640px) {
+  .certifications-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media only screen and (min-width: 1024px) {
+  .certifications-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+  .section-title {
+    font-size: 44px;
+  }
+}
+@media only screen and (min-width: 1600px) {
+  .section-title {
+    font-size: 52px;
+  }
+  .section-subtitle {
+    font-size: 17px;
+  }
+}

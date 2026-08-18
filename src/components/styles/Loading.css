@@ -1,0 +1,778 @@
+.loading-screen {
+  position: fixed;
+  width: 100vw;
+  height: var(--vh);
+  z-index: 999999999;
+  display: flex;
+  place-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at center, rgba(30,24,40,0.6) 0%, rgba(8,6,10,0.95) 60%), linear-gradient(180deg, rgba(10,8,14,1) 0%, rgba(8,6,12,1) 100%);
+  color: #cfcff8;
+  overflow: hidden;
+}
+
+/* =========================================================
+   Center stack: character + greeting + progress/pill
+   ========================================================= */
+.loading-center {
+  position: relative;
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: clamp(10px, 2.2vh, 22px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.loading-center-exit {
+  opacity: 0;
+  transform: translateY(-18px) scale(0.98);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+/* =========================================================
+   3D faceted core ("gem") — the loading mascot
+   ========================================================= */
+.loading-character-scale {
+  position: relative;
+  transition: transform 0.4s ease-out;
+  will-change: transform;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.character-3d-stage {
+  width: clamp(150px, 24vw, 230px);
+  height: clamp(150px, 24vw, 230px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 900px;
+}
+
+.character-3d-tilt {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  transition: transform 0.35s cubic-bezier(0.22, 0.9, 0.32, 1);
+}
+
+.character-3d-spin {
+  position: relative;
+  width: 92px;
+  height: 96px;
+  transform-style: preserve-3d;
+  animation: gemSpin 9s linear infinite;
+}
+
+.gem-facet {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 92px;
+  height: 96px;
+  margin: -48px 0 0 -46px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.08);
+  backface-visibility: hidden;
+}
+
+.gem-cap-top {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 92px;
+  height: 92px;
+  margin: -46px 0 0 -46px;
+  transform: rotateX(90deg) translateZ(48px);
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  background: radial-gradient(
+    circle at 35% 30%,
+    rgba(255, 255, 255, 0.95),
+    rgba(206, 190, 255, 0.6) 55%,
+    rgba(120, 90, 220, 0.4) 100%
+  );
+}
+
+.gem-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 38px;
+  height: 38px;
+  margin: -19px 0 0 -19px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #ffffff 0%,
+    #c9b6ff 42%,
+    rgba(168, 124, 255, 0.4) 72%,
+    transparent 100%
+  );
+  filter: blur(3px);
+  animation: coreGlow 2.4s ease-in-out infinite;
+}
+
+.gem-highlight {
+  position: absolute;
+  top: 16%;
+  left: 20%;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.85), transparent 70%);
+  filter: blur(2px);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.gem-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  border: 1.4px solid rgba(168, 124, 255, 0.4);
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+.ring-outer {
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  transform: rotateX(78deg) rotateZ(0deg);
+  animation: ringSpinOuter 7s linear infinite;
+}
+.ring-inner {
+  width: 116px;
+  height: 116px;
+  margin: -58px 0 0 -58px;
+  border-color: rgba(216, 200, 255, 0.5);
+  transform: rotateX(78deg) rotateZ(0deg);
+  animation: ringSpinInner 5s linear infinite reverse;
+  animation-delay: -1.4s;
+}
+
+.gem-shadow {
+  width: 84px;
+  height: 14px;
+  margin-top: 4px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.45), transparent 70%);
+  filter: blur(2px);
+}
+
+/* A quick, celebratory flash the moment loading finishes */
+.loading-character-celebrate .character-3d-spin {
+  animation: gemSpin 9s linear infinite, gemPulse 0.7s ease-out;
+}
+
+@keyframes gemSpin {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
+@keyframes ringSpinOuter {
+  from { transform: rotateX(78deg) rotateZ(0deg); }
+  to { transform: rotateX(78deg) rotateZ(360deg); }
+}
+@keyframes ringSpinInner {
+  from { transform: rotateX(78deg) rotateZ(0deg); }
+  to { transform: rotateX(78deg) rotateZ(360deg); }
+}
+@keyframes coreGlow {
+  0%, 100% { opacity: 0.78; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.18); }
+}
+@keyframes gemPulse {
+  0% { filter: brightness(1); }
+  40% { filter: brightness(1.7); }
+  100% { filter: brightness(1); }
+}
+
+/* =========================================================
+   Greeting + micro-messages
+   ========================================================= */
+.loading-greeting-wrap {
+  text-align: center;
+  transition: opacity 0.5s ease;
+}
+.greeting-fade {
+  opacity: 0.4;
+}
+.loading-greeting {
+  margin: 0;
+  font-weight: 600;
+  font-size: clamp(20px, 3.4vw, 34px);
+  letter-spacing: 0.2px;
+  color: #f0edff;
+}
+.loading-greeting-char {
+  display: inline-block;
+  opacity: 0;
+  animation: charReveal 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+.loading-subgreeting {
+  margin: 6px 0 0;
+  font-size: clamp(12px, 1.4vw, 15px);
+  font-weight: 400;
+  letter-spacing: 0.4px;
+  color: rgba(207, 207, 248, 0.65);
+  opacity: 0;
+  animation: subFadeIn 0.7s ease-out forwards;
+  animation-delay: 0.65s;
+}
+.loading-micro {
+  margin: 14px 0 0;
+  font-size: clamp(11px, 1.2vw, 13px);
+  font-weight: 400;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: rgba(168, 124, 255, 0.8);
+  opacity: 0;
+  animation: microFade 0.5s ease-out forwards;
+}
+@keyframes charReveal {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes subFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 0.75; transform: translateY(0); }
+}
+@keyframes microFade {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   Progress ring around the existing pill
+   ========================================================= */
+.loading-progress-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.progress-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: clamp(160px, 27vw, 270px);
+  height: clamp(160px, 27vw, 270px);
+  transform: translate(-50%, -50%) rotate(-90deg);
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+.progress-ring-fade {
+  opacity: 0;
+}
+.progress-ring-bg {
+  fill: none;
+  stroke: rgba(168, 124, 255, 0.14);
+  stroke-width: 1.4;
+}
+.progress-ring-fg {
+  fill: none;
+  stroke: #a87cff;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 6px rgba(168, 124, 255, 0.65));
+  transition: stroke-dashoffset 0.25s ease-out;
+}
+
+.loading-button {
+  padding: 22px 54px;
+  border-radius: 100px;
+  background-color: #000;
+  overflow: hidden;
+  font-size: 18px;
+  font-weight: 500;
+  position: relative;
+  z-index: 9;
+}
+
+/* background canvas sits beneath everything */
+.loading-bg-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Ambient glow orbs — depth / parallax layers behind the character */
+.loading-glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.55;
+}
+.orb-a {
+  width: 320px;
+  height: 320px;
+  background: rgba(168, 124, 255, 0.35);
+  top: 18%;
+  left: 20%;
+  animation: orbDrift 12s ease-in-out infinite;
+}
+.orb-b {
+  width: 260px;
+  height: 260px;
+  background: rgba(120, 90, 220, 0.3);
+  bottom: 14%;
+  right: 18%;
+  animation: orbDrift 15s ease-in-out infinite reverse;
+}
+.orb-c {
+  width: 200px;
+  height: 200px;
+  background: rgba(200, 180, 255, 0.22);
+  top: 55%;
+  left: 65%;
+  animation: orbDrift 9s ease-in-out infinite;
+  animation-delay: -3s;
+}
+@keyframes orbDrift {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(24px, -28px) scale(1.1); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+/* =========================================================
+   Marquee — metallic black-to-white sweep across the text
+   ========================================================= */
+.loading-marquee {
+  position: relative;
+  z-index: 6;
+  transition: opacity 0.4s ease;
+}
+.marquee-text {
+  background: linear-gradient(
+    100deg,
+    #050505 0%,
+    #050505 38%,
+    #ffffff 50%,
+    #050505 62%,
+    #050505 100%
+  );
+  background-size: 260% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: marqueeShine 3.4s linear infinite;
+}
+@keyframes marqueeShine {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.loading-button::before {
+  content: "";
+  background-color: #ffffff;
+  top: var(--mouse-y);
+  left: var(--mouse-x);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  opacity: 1;
+  position: absolute;
+  z-index: 99;
+  filter: blur(60px);
+  opacity: 0;
+  transform: translate(-50%, -50%);
+}
+.loading-button:hover::before {
+  opacity: 1;
+}
+.loading-clicked .loading-button::before {
+  opacity: 0;
+}
+
+.loading-wrap {
+  --Lsize: 165px;
+  padding: 6px;
+  position: relative;
+  min-width: 0px;
+  min-height: 0px;
+  border-radius: 100px;
+  background-color: #000;
+  overflow: hidden;
+  transition: 0.8s ease-in-out;
+  transition-delay: 0.2s;
+  box-shadow: 0px 15px 15px 0px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loading-clicked {
+  transition-delay: 0ms;
+  transition-timing-function: cubic-bezier(0.33, 0.11, 1, 0.72);
+  transform: scale(1);
+  min-width: calc(100vw + 5000px);
+  border-radius: 5000px;
+  min-height: calc(100vh + 500px);
+  box-shadow: none;
+}
+.loading-clicked .loading-button {
+  overflow: visible;
+}
+.loading-hover {
+  background-color: #a87cff;
+  width: 250px;
+  height: 120px;
+  position: absolute;
+  top: var(--mouse-y);
+  left: var(--mouse-x);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(30px);
+  opacity: 1;
+  transition: opacity 500ms;
+}
+
+.loading-wrap:hover .loading-hover {
+  opacity: 1;
+}
+.loading-clicked:hover .loading-hover,
+.loading-clicked .loading-hover {
+  opacity: 0;
+}
+.loading-content {
+  position: relative;
+  background-color: #000;
+  width: 100%;
+  overflow: hidden;
+  transition: 0.6s;
+  text-transform: uppercase;
+}
+.loading-content-in {
+  position: relative;
+  width: var(--Lsize);
+  overflow: hidden;
+}
+.loading-content2 {
+  position: relative;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  width: var(--Lsize);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 10px;
+  text-align: center;
+  transition: 1s;
+  max-width: var(--Lsize);
+}
+.loading-clicked .loading-content2 {
+  opacity: 0;
+  transition: 0.5s;
+}
+
+.loading-content span {
+  font-weight: 300;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  opacity: 0.7;
+}
+.loading-box {
+  position: absolute;
+  right: 0px;
+  top: 50%;
+  transform: translate(100%, -50%);
+  width: 15px;
+  height: 25px;
+  background-color: white;
+  animation: blink 1s linear infinite;
+}
+.loading-icon {
+  transform: scale(0);
+  opacity: 0;
+  transition: 0.5s;
+  transition-delay: 0.5s;
+}
+
+.loading-complete .loading-icon {
+  transform: scale(1);
+  opacity: 1;
+}
+.loading-clicked .loading-icon {
+  transition-delay: 0s;
+  transition: 1s;
+  transform: translateX(200px);
+}
+.loading-clicked .loading-content2 {
+  overflow: visible;
+}
+.loading-clicked .loading-content2 span {
+  transition: 1s;
+  transform: translateY(100px);
+  opacity: 0;
+}
+.loading-container {
+  position: absolute;
+  width: 100%;
+  max-width: var(--Lsize);
+  /* height: 45px; */
+  top: 50%;
+  transition: 1s;
+  left: 50px;
+  z-index: 9;
+  transform: translateY(-50%);
+}
+
+.loading-complete .loading-container {
+  max-width: 0px;
+}
+.loading-header {
+  width: var(--cWidth);
+  max-width: var(--cMaxWidth);
+  position: fixed;
+  z-index: 9999999999;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 20px 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  color: var(--backgroundColor);
+}
+.loader-title {
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+  font-family: "Geist", "SFMono-Regular", Menlo, Monaco, "Roboto Mono", monospace;
+  color: #e6f7ff;
+}
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.loading-complete .loading-box {
+  animation: blinkDone 0.3s forwards;
+  animation-delay: 1s;
+  opacity: 1;
+}
+@keyframes blinkDone {
+  to {
+    opacity: 0;
+  }
+}
+
+.loaderGame-container {
+  width: 200px;
+  transition: 0.3s;
+  height: 100px;
+  overflow: hidden;
+  position: relative;
+  transform: scale(0.4);
+  transform-origin: top right;
+}
+.loader-out .loaderGame-container {
+  opacity: 0;
+}
+.loaderGame-in {
+  width: 1200px;
+  position: absolute;
+  overflow: hidden;
+  left: 0;
+  animation: loaderGame 7s linear infinite;
+}
+@keyframes loaderGame {
+  0% {
+    transform: translateX(0px);
+  }
+  100% {
+    transform: translateX(-300px);
+  }
+}
+.loaderGame-line {
+  float: left;
+  margin: 0px 20px;
+  margin-bottom: 40px;
+  position: relative;
+  width: 10px;
+  height: 60px;
+  background-color: #000;
+  display: block;
+}
+.loaderGame-line:nth-child(2n) {
+  margin-top: 40px;
+  margin-bottom: 0px;
+}
+
+.loaderGame-ball {
+  position: absolute;
+  left: 20%;
+  top: 0%;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #a87cff;
+  animation: ball25 7s infinite;
+  transform: translateY(10px);
+  animation-timing-function: cubic-bezier(0.3, 1.18, 0.63, 1.28);
+}
+.loading-marquee {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  font-size: 60px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.loading-marquee span {
+  padding: 0px 50px;
+  position: relative;
+}
+.loading-marquee span::before {
+  content: "";
+  width: 20px;
+  height: 20px;
+  background-color: var(--backgroundColor);
+  position: absolute;
+  top: 50%;
+  border-radius: 50px;
+  left: 0px;
+  transform: translate(-50%, -50%);
+}
+@keyframes ball25 {
+  0% {
+    transform: translateY(70px);
+  }
+  15% {
+    transform: translateY(10px);
+  }
+  30% {
+    transform: translateY(70px);
+  }
+  45% {
+    transform: translateY(10px);
+  }
+  67% {
+    transform: translateY(70px);
+  }
+  80% {
+    transform: translateY(10px);
+  }
+  90% {
+    transform: translateY(70px);
+  }
+  100% {
+    transform: translateY(70px);
+  }
+}
+
+/* =========================================================
+   Reduced motion: keep essential state changes, drop decorative motion
+   ========================================================= */
+.loading-reduced-motion .character-3d-spin,
+.loading-reduced-motion .gem-ring,
+.loading-reduced-motion .gem-core,
+.loading-reduced-motion .loading-glow-orb,
+.loading-reduced-motion .marquee-text,
+.loading-reduced-motion .loaderGame-in,
+.loading-reduced-motion .loaderGame-ball {
+  animation: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .character-3d-spin,
+  .gem-ring,
+  .gem-core,
+  .loading-glow-orb,
+  .marquee-text {
+    animation: none !important;
+  }
+}
+
+@media only screen and (min-width: 1400px) {
+  .loading-wrap {
+    --Lsize: 230px;
+  }
+  .loading-button {
+    padding: 34px 78px;
+    font-size: 25px;
+  }
+  .loading-container {
+    left: 70px;
+  }
+  .loading-marquee {
+    font-size: 100px;
+  }
+  .character-3d-stage {
+    width: clamp(190px, 20vw, 260px);
+    height: clamp(190px, 20vw, 260px);
+  }
+}
+@media only screen and (min-width: 500px) {
+  .loading-header {
+    padding: 20px 0px;
+  }
+  .loader-title {
+    font-size: 16px;
+  }
+}
+@media only screen and (min-width: 1200px) {
+  .loading-header {
+    padding: 35px 0px;
+  }
+  .loader-title {
+    font-size: 18px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .loading-center {
+    row-gap: 12px;
+  }
+  .loading-greeting {
+    font-size: 20px;
+  }
+  .loading-subgreeting {
+    font-size: 12px;
+  }
+  .character-3d-spin {
+    width: 76px;
+    height: 80px;
+  }
+  .gem-facet {
+    width: 76px;
+    height: 80px;
+    margin: -40px 0 0 -38px;
+  }
+  .gem-cap-top {
+    width: 76px;
+    height: 76px;
+    margin: -38px 0 0 -38px;
+    transform: rotateX(90deg) translateZ(40px);
+  }
+  .ring-outer {
+    width: 126px;
+    height: 126px;
+    margin: -63px 0 0 -63px;
+  }
+  .ring-inner {
+    width: 98px;
+    height: 98px;
+    margin: -49px 0 0 -49px;
+  }
+}

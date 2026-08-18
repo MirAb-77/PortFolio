@@ -1,0 +1,315 @@
+.services-section {
+  position: relative;
+  width: 100%;
+  padding: 140px 0 120px;
+  z-index: 20;
+  overflow: hidden;
+  perspective: 1000px;
+}
+
+/* ---- centered container (matches Landing/container1 pattern) ---- */
+.services-container {
+  position: relative;
+  width: var(--cWidth);
+  max-width: var(--cMaxWidth);
+  margin: 0 auto;
+  z-index: 2;
+}
+
+/* ---- ambient glow + dot grid, scoped to this section only ---- */
+.services-glow {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+}
+.services-glow-1 {
+  top: -140px;
+  left: -100px;
+  background: radial-gradient(circle, rgba(194, 164, 255, 0.35), transparent 70%);
+}
+.services-glow-2 {
+  bottom: -160px;
+  right: -120px;
+  background: radial-gradient(circle, rgba(251, 141, 255, 0.28), transparent 70%);
+}
+.services-dotgrid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.35;
+  background-image: radial-gradient(rgba(194, 164, 255, 0.25) 1px, transparent 1px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(ellipse 60% 55% at 50% 35%, #000 0%, transparent 75%);
+  mask-image: radial-gradient(ellipse 60% 55% at 50% 35%, #000 0%, transparent 75%);
+  pointer-events: none;
+}
+
+/* ---- heading ---- */
+.services-heading {
+  max-width: 640px;
+  margin: 0 0 60px;
+}
+.services-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Geist", "SFMono-Regular", Menlo, Monaco, "Roboto Mono",
+    monospace;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--accentColor);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.services-eyebrow-line {
+  width: 28px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accentColor), transparent);
+}
+.services-title {
+  font-family: "Geist", sans-serif;
+  font-weight: 600;
+  font-size: 36px;
+  letter-spacing: 1px;
+  margin: 0 0 14px;
+  color: #eae5ec;
+  text-transform: uppercase;
+}
+.services-subtitle {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #a9a3ad;
+  font-weight: 300;
+  margin: 0;
+}
+
+/* ---- uniform grid — every card the same size ---- */
+.services-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+}
+.service-item {
+  display: block;
+}
+
+/* ---- notched HUD panel (not a plain rounded card) ---- */
+.service-card {
+  --mx: 50%;
+  --my: 50%;
+  --notch: 22px;
+  position: relative;
+  height: 100%;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 28px 28px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01));
+  border: 1px solid rgba(194, 164, 255, 0.14);
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--notch)) 0,
+    100% var(--notch),
+    100% 100%,
+    var(--notch) 100%,
+    0 calc(100% - var(--notch))
+  );
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  overflow: hidden;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+/* cursor-tracked spotlight */
+.service-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle 220px at var(--mx) var(--my),
+    rgba(194, 164, 255, 0.16),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.service-item:hover .service-card::before {
+  opacity: 1;
+}
+.service-item:hover .service-card {
+  transform: translateY(-6px);
+  border-color: rgba(194, 164, 255, 0.4);
+  box-shadow: 0 26px 60px -22px rgba(84, 0, 255, 0.4);
+}
+
+/* HUD corner brackets on the two un-notched corners */
+.service-card-corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  opacity: 0.5;
+  transition: opacity 0.4s ease, border-color 0.4s ease;
+}
+.service-card-corner-tl {
+  top: 14px;
+  left: 14px;
+  border-top: 1.5px solid var(--accentColor);
+  border-left: 1.5px solid var(--accentColor);
+}
+.service-card-corner-br {
+  bottom: 14px;
+  right: 14px;
+  border-bottom: 1.5px solid var(--accentColor);
+  border-right: 1.5px solid var(--accentColor);
+}
+.service-item:hover .service-card-corner {
+  opacity: 1;
+}
+
+/* terminal-style index row */
+.service-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.service-card-index {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: "Geist", "SFMono-Regular", Menlo, Monaco, "Roboto Mono",
+    monospace;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: rgba(194, 164, 255, 0.65);
+}
+.service-card-index-total {
+  color: rgba(194, 164, 255, 0.3);
+}
+.service-card-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accentColor);
+  box-shadow: 0 0 8px 1px rgba(194, 164, 255, 0.7);
+  animation: servicePulse 2.4s ease-in-out infinite;
+}
+@keyframes servicePulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+.service-card-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  color: var(--accentColor);
+  background: linear-gradient(160deg, rgba(194, 164, 255, 0.14), rgba(194, 164, 255, 0.02));
+  border: 1px solid rgba(194, 164, 255, 0.2);
+  box-shadow: 0 0 22px -6px rgba(194, 164, 255, 0.35);
+}
+.service-card-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.service-card-title {
+  margin: 0 0 10px;
+  font-size: 17px;
+  font-weight: 600;
+  color: #eae5ec;
+  letter-spacing: 0.3px;
+}
+.service-card-desc {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: #a9a3ad;
+  font-weight: 300;
+  flex-grow: 1;
+}
+
+.service-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 20px;
+}
+.service-card-tag {
+  font-family: "Geist", "SFMono-Regular", Menlo, Monaco, "Roboto Mono",
+    monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.4px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  color: #d6c9ff;
+  background: rgba(194, 164, 255, 0.08);
+  border: 1px solid rgba(194, 164, 255, 0.16);
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+.service-item:hover .service-card-tag {
+  border-color: rgba(194, 164, 255, 0.35);
+  background: rgba(194, 164, 255, 0.13);
+}
+
+.service-card-line {
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accentColor), rgba(251, 141, 255, 0.6));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.service-item:hover .service-card-line {
+  transform: scaleX(1);
+}
+
+/* ---- responsive — same uniform grid at every size ---- */
+@media only screen and (min-width: 640px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media only screen and (min-width: 1024px) {
+  .services-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+  }
+  .services-title {
+    font-size: 44px;
+  }
+}
+@media only screen and (min-width: 1600px) {
+  .services-grid {
+    gap: 30px;
+  }
+  .services-title {
+    font-size: 52px;
+  }
+  .services-subtitle {
+    font-size: 17px;
+  }
+}
