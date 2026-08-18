@@ -11,7 +11,6 @@ interface Props {
 const WorkImage = (props: Props) => {
   const [isVideo, setIsVideo] = useState(false);
   const [video, setVideo] = useState("");
-  const isDualImage = Array.isArray(props.image);
 
   const handleMouseEnter = async () => {
     if (props.video) {
@@ -23,10 +22,11 @@ const WorkImage = (props: Props) => {
     }
   };
 
-  if (isDualImage) {
+  if (Array.isArray(props.image)) {
+    const images = props.image;
     return (
       <div className="work-image-dual">
-        {props.image.map((img, index) => (
+        {images.map((img, index) => (
           <div className="work-image-dual-item" key={index}>
             <a
               className="work-image-in"
