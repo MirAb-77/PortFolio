@@ -157,8 +157,8 @@ const Loading = ({ percent }: { percent: number }) => {
     }
 
     function resize() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
+      w = canvas!.width = window.innerWidth;
+      h = canvas!.height = window.innerHeight;
       if (prefersReduced) paintBackdrop();
     }
 
