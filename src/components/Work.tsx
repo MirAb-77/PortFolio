@@ -17,37 +17,37 @@ const projects: Project[] = [
   {
     name: "HealMatrix AI",
     category: "Multimodal Mental Health Assistant",
-    tools: "Python, PyTorch, LLaMA 3.3 70B, FAISS, LangGraph, Twilio",
-    image: ["/images/projects/h2.webp", ""]
+    tools: "Python, PyTorch, LLaMA 3.3 70B, FAISS, LangGraph, Twilio, RAG, AI Agents, Django"
+    image: ["/images/projects/h2.webp"]
   },
   {
     name: "AgentFlow AI",
     category: "Multi-Provider Agentic AI Platform",
-    tools: "LangGraph, LangChain, FastAPI, SQLite, Groq, Gemini, SSE",
+    tools: "LangGraph, LangChain, FastAPI, SQLite, Groq, Gemini, SSE, Open Router, Docker",
     image: ["/images/projects/af1.webp", "/images/projects/af2.webp"]
   },
   {
     name: "ResearchForge AI",
     category: "Autonomous Research Pipeline",
-    tools: "Django, SearXNG, RAG, ChromaDB, Celery, Docker",
+    tools: "Django, SearXNG, RAG, ChromaDB, Celery, Redis, DRF , TriFilatura, XHTML2PDF, Sentence Transformers",
     image: ["/images/projects/rs2.webp", "/images/projects/rs1.webp"]
   },
   {
     name: "Cheatify",
     category: "AI Exam Proctoring System",
-    tools: "Python, OpenCV, MediaPipe, YOLOv12, TensorFlow",
+    tools: "Python, OpenCV, MediaPipe, YOLOv12, Pytorch, CUDA, Dlib",
     image: ["/images/projects/ch.webp", "/images/projects/ch1.webp"]
   },
   {
     name: "VITA",
     category: "Multimodal Clinical Decision Support",
-    tools: "Groq API, Multimodal Fusion, ElevenLabs, Flask, OpenCV",
+    tools: "Groq API, Multimodal Fusion, OpenAI Whisper, ElevenLabs, Flask, OpenCV, PyAudio",
     image: ["/images/projects/v1.webp", "/images/projects/v2.webp"]
   },
   {
     name: "WhatsAgent AI",
     category: "Autonomous WhatsApp Support Agent",
-    tools: "n8n, WhatsApp API, Twilio API, Groq, Airtable",
+    tools: "n8n, WhatsApp API, Twilio API, Groq, Airtable, Automation",
     image: ["/images/projects/ws1.webp", "/images/projects/ws2.webp"]
   },
 ];
