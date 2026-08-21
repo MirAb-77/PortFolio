@@ -17,7 +17,7 @@ const projects: Project[] = [
   {
     name: "HealMatrix AI",
     category: "Multimodal Mental Health Assistant",
-    tools: "Python, PyTorch, LLaMA 3.3 70B, FAISS, LangGraph, Twilio, RAG, AI Agents, Django"
+    tools: "Python, PyTorch, LLaMA 3.3 70B, FAISS, LangGraph, Twilio, RAG, AI Agents, Django",
     image: ["/images/projects/h2.webp"]
   },
   {
